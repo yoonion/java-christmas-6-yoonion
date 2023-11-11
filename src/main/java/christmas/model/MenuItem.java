@@ -12,18 +12,27 @@ public enum MenuItem {
 
     CHOCOCAKE("초코케이크", 15000, MenuCategory.DESSERT),
     ICECREAM("아이스크림", 5000, MenuCategory.DESSERT),
-    
+
     ZEROCOLA("제로콜라", 3000, MenuCategory.BEVERAGE),
     REDWINE("레드와인", 60000, MenuCategory.BEVERAGE),
     CHAMPAGNE("샴페인", 25000, MenuCategory.BEVERAGE);
 
-    private String itemName;
-    private int itemPrice;
-    private MenuCategory category;
+    private final String itemName;
+    private final int itemPrice;
+    private final MenuCategory category;
 
     MenuItem(String itemName, int itemPrice, MenuCategory category) {
         this.itemName = itemName;
         this.itemPrice = itemPrice;
         this.category = category;
+    }
+
+    public static boolean hasItemName(String itemName) {
+        for (MenuItem menuItem : MenuItem.values()) {
+            if (menuItem.itemName.equals(itemName)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

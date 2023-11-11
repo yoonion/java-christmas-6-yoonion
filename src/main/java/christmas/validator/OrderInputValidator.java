@@ -1,5 +1,7 @@
 package christmas.validator;
 
+import christmas.model.MenuItem;
+
 public class OrderInputValidator {
 
     private final static String DEFAULT_ERROR_MESSAGE = ValidatorConstants.DEFAULT_ERROR_MESSAGE;
@@ -16,12 +18,19 @@ public class OrderInputValidator {
         int totalOrderQuantity = 0;
         String[] orderMenuAndQuantities = inputOrderMenuAndQuantity.split(ORDER_DELIMITER);
         for (String orderMenuAndQuantity : orderMenuAndQuantities) {
-            // String orderMenu = orderMenuAndQuantity.split(MENU_AND_QUANTITY_DELIMITER)[0];
+            String orderMenu = orderMenuAndQuantity.split(MENU_AND_QUANTITY_DELIMITER)[0];
+            checkOrderMenuExist(orderMenu);
             String orderQuantity = orderMenuAndQuantity.split(MENU_AND_QUANTITY_DELIMITER)[1];
             checkOrderQuantityRange(orderQuantity);
             totalOrderQuantity += Integer.parseInt(orderQuantity);
         }
         checkTotalOrderQuantity(totalOrderQuantity);
+    }
+
+    private void checkOrderMenuExist(String orderMenu) {
+        if (!MenuItem.hasItemName(orderMenu)) {
+            throw new IllegalArgumentException(INVALID_ORDER_MESSAGE);
+        }
     }
 
     private void checkContainHyphen(String inputOrderMenuAndQuantity) {
