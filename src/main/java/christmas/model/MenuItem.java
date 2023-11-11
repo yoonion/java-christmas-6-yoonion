@@ -5,7 +5,7 @@ public enum MenuItem {
     TAPAS("타파스", 5500, MenuCategory.APPETIZER),
     CAESAR_SALAD("시저샐러드", 8000, MenuCategory.APPETIZER),
 
-    TI_BONE_STEAK("티본스테이크", 55000, MenuCategory.MAIN),
+    T_BONE_STEAK("티본스테이크", 55000, MenuCategory.MAIN),
     BBQ_RIB("바비큐립", 54000, MenuCategory.MAIN),
     SEA_FOOD_PASTA("해산물파스타", 35000, MenuCategory.MAIN),
     CHRISTMAS_PASTA("크리스마스파스타", 25000, MenuCategory.MAIN),
@@ -15,7 +15,9 @@ public enum MenuItem {
 
     ZERO_COLA("제로콜라", 3000, MenuCategory.BEVERAGE),
     RED_WINE("레드와인", 60000, MenuCategory.BEVERAGE),
-    CHAMPAGNE("샴페인", 25000, MenuCategory.BEVERAGE);
+    CHAMPAGNE("샴페인", 25000, MenuCategory.BEVERAGE),
+
+    EMPTY("없음", 0, MenuCategory.EMPTY);
 
     private final String itemName;
     private final int itemPrice;
@@ -25,6 +27,24 @@ public enum MenuItem {
         this.itemName = itemName;
         this.itemPrice = itemPrice;
         this.category = category;
+    }
+
+    /*public static MenuItem findByItemName(String itemName) {
+        for (MenuItem menuItem : MenuItem.values()) {
+            if (menuItem.itemName.equals(itemName)) {
+                return menuItem;
+            }
+        }
+        return MenuItem.EMPTY;
+    }*/
+
+    public static boolean isMenuBeverage(String itemName) {
+        for (MenuItem menuItem : MenuItem.values()) {
+            if (menuItem.category == MenuCategory.BEVERAGE) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static boolean hasItemName(String itemName) {

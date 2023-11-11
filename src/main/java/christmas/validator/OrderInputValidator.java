@@ -19,22 +19,35 @@ public class OrderInputValidator {
         checkContainHyphen(inputOrderMenuAndQuantity);
 
         int totalOrderQuantity = 0;
+        boolean isMenuOnlyBeverage = true;
         String[] orderMenuAndQuantities = inputOrderMenuAndQuantity.split(ORDER_DELIMITER);
         for (String orderMenuAndQuantity : orderMenuAndQuantities) {
             String orderMenu = orderMenuAndQuantity.split(MENU_AND_QUANTITY_DELIMITER)[0];
             checkOrderMenuExist(orderMenu);
+            isMenuOnlyBeverage = isMenuBeverage(orderMenu);
             String orderQuantity = orderMenuAndQuantity.split(MENU_AND_QUANTITY_DELIMITER)[1];
             checkOrderQuantityRange(orderQuantity);
             totalOrderQuantity += Integer.parseInt(orderQuantity);
         }
+        checkOrderOnlyBeverage(isMenuOnlyBeverage);
         checkTotalOrderQuantity(totalOrderQuantity);
     }
 
     public void checkOrderDuplicateMenu(String inputOrderMenuAndQuantity) {
-        List<String> numList = Arrays.asList(inputOrderMenuAndQuantity.split(ORDER_DELIMITER));
-        if(numList.size() != numList.stream().distinct().count()){
+        List<String> orders = Arrays.asList(inputOrderMenuAndQuantity.split(ORDER_DELIMITER));
+        if(orders.size() != orders.stream().distinct().count()){
             throw new IllegalArgumentException(INVALID_ORDER_MESSAGE);
         }
+    }
+
+    private void checkOrderOnlyBeverage(boolean isMenuOnlyBeverage) {
+        if (isMenuOnlyBeverage) {
+            throw new IllegalArgumentException(INVALID_ORDER_MESSAGE);
+        }
+    }
+
+    private boolean isMenuBeverage(String orderMenu) {
+        return MenuItem.isMenuBeverage(orderMenu);
     }
 
     private void checkOrderMenuExist(String orderMenu) {
