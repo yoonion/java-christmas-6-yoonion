@@ -13,4 +13,11 @@ public class VisitDateInputValidator {
             throw new IllegalArgumentException(INVALID_DATE_MESSAGE);
         }
     }
+
+    public void checkVisitDateRange(String inputVisitDate) {
+        int visitDate = Integer.parseInt(inputVisitDate);
+        if (!(visitDate >= 1 && visitDate <= 31)) {
+            throw new IllegalArgumentException(INVALID_DATE_MESSAGE);
+        }
+    }
 }
