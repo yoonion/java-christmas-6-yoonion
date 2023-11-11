@@ -29,22 +29,18 @@ public enum MenuItem {
         this.category = category;
     }
 
-    /*public static MenuItem findByItemName(String itemName) {
+    public static MenuItem findByItemName(String itemName) {
         for (MenuItem menuItem : MenuItem.values()) {
             if (menuItem.itemName.equals(itemName)) {
                 return menuItem;
             }
         }
         return MenuItem.EMPTY;
-    }*/
+    }
 
     public static boolean isMenuBeverage(String itemName) {
-        for (MenuItem menuItem : MenuItem.values()) {
-            if (menuItem.category == MenuCategory.BEVERAGE) {
-                return true;
-            }
-        }
-        return false;
+        MenuItem findItem = findByItemName(itemName);
+        return findItem.category == MenuCategory.BEVERAGE;
     }
 
     public static boolean hasItemName(String itemName) {
