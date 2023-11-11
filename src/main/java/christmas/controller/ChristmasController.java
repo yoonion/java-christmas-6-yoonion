@@ -22,8 +22,20 @@ public class ChristmasController {
 
     // 게임 진행 총괄 메서드
     public void promotionRun() {
-        inputView.inputVisitDate();
-        inputView.inputOrderMenuAndQuantity();
+        inputVisitDate();
+
+        String inputOrderMenuAndQuantity = inputView.inputOrderMenuAndQuantity();
     }
 
+    private String inputVisitDate() {
+        while (true) {
+            try {
+                String inputVisitDate = inputView.inputVisitDate();
+                visitDateInputValidator.checkStringIsNumber(inputVisitDate);
+                return inputVisitDate;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
 }
