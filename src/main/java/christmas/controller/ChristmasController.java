@@ -44,6 +44,7 @@ public class ChristmasController {
             try {
                 String inputOrderMenuAndQuantity = inputView.inputOrderMenuAndQuantity();
                 orderInputValidator.checkOrderFormat(inputOrderMenuAndQuantity);
+                orderInputValidator.checkOrderDuplicateMenu(inputOrderMenuAndQuantity);
                 return inputOrderMenuAndQuantity;
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());

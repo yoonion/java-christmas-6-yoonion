@@ -2,15 +2,18 @@ package christmas.validator;
 
 import christmas.model.MenuItem;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class OrderInputValidator {
 
-    private final static String DEFAULT_ERROR_MESSAGE = ValidatorConstants.DEFAULT_ERROR_MESSAGE;
-    private final static String INVALID_ORDER_MESSAGE = DEFAULT_ERROR_MESSAGE + "유효하지 않은 주문입니다. 다시 입력해 주세요.";
-    private final static String ORDER_DELIMITER = ",";
-    private final static String MENU_AND_QUANTITY_DELIMITER = "-";
+    private static final String DEFAULT_ERROR_MESSAGE = ValidatorConstants.DEFAULT_ERROR_MESSAGE;
+    private static final String INVALID_ORDER_MESSAGE = DEFAULT_ERROR_MESSAGE + "유효하지 않은 주문입니다. 다시 입력해 주세요.";
+    private static final String ORDER_DELIMITER = ",";
+    private static final String MENU_AND_QUANTITY_DELIMITER = "-";
 
-    private final static int ORDER_MINIMUM_QUANTITY = 1;
-    private final static int ORDER_MAXIMUM_QUANTITY = 20;
+    private static final int ORDER_MINIMUM_QUANTITY = 1;
+    private static final int ORDER_MAXIMUM_QUANTITY = 20;
 
     public void checkOrderFormat(String inputOrderMenuAndQuantity) {
         checkContainHyphen(inputOrderMenuAndQuantity);
@@ -25,6 +28,13 @@ public class OrderInputValidator {
             totalOrderQuantity += Integer.parseInt(orderQuantity);
         }
         checkTotalOrderQuantity(totalOrderQuantity);
+    }
+
+    public void checkOrderDuplicateMenu(String inputOrderMenuAndQuantity) {
+        List<String> numList = Arrays.asList(inputOrderMenuAndQuantity.split(ORDER_DELIMITER));
+        if(numList.size() != numList.stream().distinct().count()){
+            throw new IllegalArgumentException(INVALID_ORDER_MESSAGE);
+        }
     }
 
     private void checkOrderMenuExist(String orderMenu) {
