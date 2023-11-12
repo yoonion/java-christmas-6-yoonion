@@ -36,7 +36,13 @@ public class ChristmasController {
         Orders orders = inputOrderMenuAndQuantity();
         outputView.printEventIntroduction(visitDate);
         outputView.printOrders(orders);
-        outputView.printOriginalTotalPrice(MenuItem.getOrderTotalPrice(orders));
+
+        // 할인 전 총주문 금액
+        int originalTotalPrice = MenuItem.getOrderTotalPrice(orders);
+        outputView.printOriginalTotalPrice(originalTotalPrice);
+
+        // 크리스마스 디데이 할인
+        int christmasDiscountPrice = christmasService.getChristmasDiscountPrice(visitDate, originalTotalPrice);
     }
 
     private int inputVisitDate() {

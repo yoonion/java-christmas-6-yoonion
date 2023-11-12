@@ -1,5 +1,7 @@
 package christmas.service;
 
+import christmas.model.discount.ChristmasDiscountPolicy;
+import christmas.model.discount.RegularDiscountPolicy;
 import christmas.model.order.Orders;
 
 import java.util.HashMap;
@@ -7,8 +9,15 @@ import java.util.Map;
 
 public class ChristmasService {
 
+    ChristmasDiscountPolicy christmasDiscountPolicy = new ChristmasDiscountPolicy();
+    RegularDiscountPolicy regularDiscountPolicy = new RegularDiscountPolicy();
+
     public Orders createOrders(String inputOrderMenuAndQuantity) {
         return new Orders(orderConvertStringToMap(inputOrderMenuAndQuantity));
+    }
+
+    public int getChristmasDiscountPrice(int visitDate, int originalTotalPrice) {
+        return christmasDiscountPolicy.getChristmasDiscountPrice(visitDate, originalTotalPrice);
     }
 
     private Map<String, Integer> orderConvertStringToMap(String inputOrderMenuAndQuantity) {

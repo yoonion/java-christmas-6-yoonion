@@ -1,5 +1,5 @@
 package christmas.model.discount;
 
 public class DiscountPolicyConstants {
-    private static final int ORDER_MINIMUM_PRICE = 100000;
+    public static final int DISCOUNT_ORDER_MINIMUM_PRICE = 10000;
 }
