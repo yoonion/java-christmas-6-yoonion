@@ -1,5 +1,6 @@
 package christmas.controller;
 
+import christmas.model.menu.MenuItem;
 import christmas.model.order.Orders;
 import christmas.service.ChristmasService;
 import christmas.validator.OrderInputValidator;
@@ -35,6 +36,7 @@ public class ChristmasController {
         Orders orders = inputOrderMenuAndQuantity();
         outputView.printEventIntroduction(visitDate);
         outputView.printOrders(orders);
+        outputView.printOriginalTotalPrice(MenuItem.getOrderTotalPrice(orders));
     }
 
     private int inputVisitDate() {
