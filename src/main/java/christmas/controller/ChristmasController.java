@@ -1,6 +1,7 @@
 package christmas.controller;
 
-import christmas.model.MenuItem;
+import christmas.model.order.Orders;
+import christmas.service.ChristmasService;
 import christmas.validator.OrderInputValidator;
 import christmas.validator.VisitDateInputValidator;
 import christmas.view.InputView;
@@ -10,17 +11,20 @@ public class ChristmasController {
 
     private final InputView inputView;
     private final OutputView outputView;
+    private final ChristmasService christmasService;
     private final VisitDateInputValidator visitDateInputValidator;
     private final OrderInputValidator orderInputValidator;
 
     public ChristmasController(
             InputView inputView,
             OutputView outputView,
+            ChristmasService christmasService,
             VisitDateInputValidator visitDateInputValidator,
             OrderInputValidator orderInputValidator
     ) {
         this.inputView = inputView;
         this.outputView = outputView;
+        this.christmasService = christmasService;
         this.visitDateInputValidator = visitDateInputValidator;
         this.orderInputValidator = orderInputValidator;
     }
@@ -31,8 +35,7 @@ public class ChristmasController {
         String inputOrderMenuAndQuantity = inputOrderMenuAndQuantity();
         outputView.printEventIntroduction(inputVisitDate);
 
-        int orderTotalPrice = MenuItem.getOrderTotalPrice(inputOrderMenuAndQuantity);
-
+        Orders orders = christmasService.createOrders(inputOrderMenuAndQuantity);
     }
 
     private int inputVisitDate() {
@@ -53,7 +56,6 @@ public class ChristmasController {
             try {
                 String inputOrderMenuAndQuantity = inputView.inputOrderMenuAndQuantity();
                 orderInputValidator.checkOrderFormat(inputOrderMenuAndQuantity);
-                orderInputValidator.checkOrderDuplicateMenu(inputOrderMenuAndQuantity);
                 return inputOrderMenuAndQuantity;
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());

@@ -1,4 +1,4 @@
-package christmas.model;
+package christmas.model.menu;
 
 public enum MenuItem {
     YANG_SUNG_SOUP("양송이수프", 6000, MenuCategory.APPETIZER),
@@ -52,7 +52,7 @@ public enum MenuItem {
         return false;
     }
 
-    public static int getOrderTotalPrice(String inputOrderMenuAndQuantity) {
+    /*public static int getOrderTotalPrice(String inputOrderMenuAndQuantity) {
         String[] orders = inputOrderMenuAndQuantity.split(",");
         int orderTotalPrice = 0;
         for (String order : orders) {
@@ -63,5 +63,5 @@ public enum MenuItem {
             orderTotalPrice += findItem.itemPrice;
         }
         return orderTotalPrice;
-    }
+    }*/
 }
