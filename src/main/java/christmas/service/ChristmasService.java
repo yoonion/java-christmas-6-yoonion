@@ -16,7 +16,7 @@ public class ChristmasService {
         String[] orderMenuAndQuantities = inputOrderMenuAndQuantity.split(",");
         for (String orderMenuAndQuantity : orderMenuAndQuantities) {
             String orderMenu = orderMenuAndQuantity.split("-")[0];
-            Integer orderQuantity = Integer.parseInt(orderMenuAndQuantity.split("-")[0]);
+            Integer orderQuantity = Integer.parseInt(orderMenuAndQuantity.split("-")[1]);
             orders.put(orderMenu, orderQuantity);
         }
         return orders;

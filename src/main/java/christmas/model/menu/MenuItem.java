@@ -1,5 +1,9 @@
 package christmas.model.menu;
 
+import christmas.model.order.Orders;
+
+import java.util.Map;
+
 public enum MenuItem {
     YANG_SUNG_SOUP("양송이수프", 6000, MenuCategory.APPETIZER),
     TAPAS("타파스", 5500, MenuCategory.APPETIZER),
@@ -52,16 +56,12 @@ public enum MenuItem {
         return false;
     }
 
-    /*public static int getOrderTotalPrice(String inputOrderMenuAndQuantity) {
-        String[] orders = inputOrderMenuAndQuantity.split(",");
+    public static int getOrderTotalPrice(Orders orders) {
+        Map<String, Integer> orderItems = orders.getOrders();
         int orderTotalPrice = 0;
-        for (String order : orders) {
-            String orderMenu = order.split("-")[0];
-            String orderQuantity = order.split("-")[1];
-
-            MenuItem findItem = findByItemName(orderMenu);
-            orderTotalPrice += findItem.itemPrice;
+        for (Map.Entry<String, Integer> order : orderItems.entrySet()) {
+            orderTotalPrice += findByItemName(order.getKey()).itemPrice;
         }
         return orderTotalPrice;
-    }*/
+    }
 }

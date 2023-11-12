@@ -3,6 +3,7 @@ package christmas.model.order;
 import christmas.model.menu.MenuItem;
 import christmas.validator.ValidatorConstants;
 
+import java.util.Collections;
 import java.util.Map;
 
 public class Orders {
@@ -19,6 +20,10 @@ public class Orders {
         this.orders = orders;
     }
 
+    public Map<String, Integer> getOrders() {
+        return Collections.unmodifiableMap(orders);
+    }
+
     private void validate(Map<String, Integer> orders) {
         int totalOrderQuantity = 0;
         boolean isMenuOnlyBeverage = true;
@@ -29,7 +34,9 @@ public class Orders {
             checkOrderMenuExist(orderMenu);
             checkOrderQuantityRange(orderQuantity);
 
-            isMenuOnlyBeverage = isMenuBeverage(orderMenu);
+            if(isMenuOnlyBeverage){
+                isMenuOnlyBeverage = MenuItem.isMenuBeverage(orderMenu);
+            }
             totalOrderQuantity += orderQuantity;
         }
         checkOrderOnlyBeverage(isMenuOnlyBeverage);
@@ -40,10 +47,6 @@ public class Orders {
         if (isMenuOnlyBeverage) {
             throw new IllegalArgumentException(INVALID_ORDER_MESSAGE);
         }
-    }
-
-    private boolean isMenuBeverage(String orderMenu) {
-        return MenuItem.isMenuBeverage(orderMenu);
     }
 
     private void checkOrderMenuExist(String orderMenu) {

@@ -31,11 +31,10 @@ public class ChristmasController {
 
     // 게임 진행 총괄 메서드
     public void promotionRun() {
-        int inputVisitDate = inputVisitDate();
-        String inputOrderMenuAndQuantity = inputOrderMenuAndQuantity();
-        outputView.printEventIntroduction(inputVisitDate);
-
-        Orders orders = christmasService.createOrders(inputOrderMenuAndQuantity);
+        int visitDate = inputVisitDate();
+        Orders orders = inputOrderMenuAndQuantity();
+        outputView.printEventIntroduction(visitDate);
+        outputView.printOrders(orders);
     }
 
     private int inputVisitDate() {
@@ -51,12 +50,12 @@ public class ChristmasController {
         }
     }
 
-    private String inputOrderMenuAndQuantity() {
+    private Orders inputOrderMenuAndQuantity() {
         while (true) {
             try {
                 String inputOrderMenuAndQuantity = inputView.inputOrderMenuAndQuantity();
                 orderInputValidator.checkOrderFormat(inputOrderMenuAndQuantity);
-                return inputOrderMenuAndQuantity;
+                return christmasService.createOrders(inputOrderMenuAndQuantity);
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
