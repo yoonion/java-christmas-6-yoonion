@@ -26,17 +26,17 @@ public class ChristmasController {
 
     // 게임 진행 총괄 메서드
     public void promotionRun() {
-        String inputVisitDate = inputVisitDate();
+        int inputVisitDate = inputVisitDate();
         String inputOrderMenuAndQuantity = inputOrderMenuAndQuantity();
     }
 
-    private String inputVisitDate() {
+    private int inputVisitDate() {
         while (true) {
             try {
                 String inputVisitDate = inputView.inputVisitDate();
                 visitDateInputValidator.checkStringIsNumber(inputVisitDate);
                 visitDateInputValidator.checkVisitDateRange(inputVisitDate);
-                return inputVisitDate;
+                return Integer.parseInt(inputVisitDate);
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
