@@ -41,24 +41,21 @@ public class ChristmasController {
         this.orderInputValidator = orderInputValidator;
     }
 
-    // 게임 진행 총괄 메서드
+    // 이벤트 진행 메서드
     public void promotionRun() {
         int visitDate = inputVisitDate();
         Orders orders = inputOrderMenuAndQuantity();
         outputView.printEventIntroduction(visitDate);
 
-        // <주문 메뉴>
-        outputView.printOrders(orders);
+        int originalTotalPrice = printOrderDetails(orders); // <주문 메뉴>, <할인 전 총주문 금액>
+        String giftMenu = printGiftMenu(visitDate, originalTotalPrice);
+        Map<String, Integer> discountDetails = printDiscountDetails(visitDate, originalTotalPrice, orders, giftMenu);
+        int totalDiscountPrice = printTotalDiscountPrice(discountDetails);
+        printAfterDiscountPaymentPrice(originalTotalPrice, totalDiscountPrice, MenuItem.getMenuPrice(giftMenu));
+        printEventBadge(totalDiscountPrice);
+    }
 
-        // <할인 전 총주문 금액>
-        int originalTotalPrice = MenuItem.getOrderTotalPrice(orders);
-        outputView.printOriginalTotalPrice(originalTotalPrice);
-
-        // <증정 메뉴>
-        String giftMenu = regularDiscountPolicy.getGiftMenuName(visitDate, originalTotalPrice);
-        outputView.printGiftMenuName(giftMenu);
-
-        // <혜택 내역>
+    private Map<String, Integer> printDiscountDetails(int visitDate, int originalTotalPrice, Orders orders, String giftMenu) {
         int christmasDiscountPrice = christmasDiscountPolicy.applyChristmasDiscountPrice(visitDate, originalTotalPrice);
         int weekdayDiscountPrice = regularDiscountPolicy.applyWeekdayDiscountPrice(visitDate, orders);
         int freeDayDiscountPrice = regularDiscountPolicy.applyFreeDayDiscountPrice(visitDate, orders);
@@ -68,20 +65,39 @@ public class ChristmasController {
                 christmasDiscountPrice, weekdayDiscountPrice, freeDayDiscountPrice, specialDiscountPrice, giftMenuPrice
         );
         outputView.printDiscountPriceDetails(discountDetails);
+        return discountDetails;
+    }
 
-        // <총혜택 금액>
-        int totalDiscountPrice = christmasService.getTotalDiscountPrice(discountDetails);
-        outputView.printTotalDiscountPrice(totalDiscountPrice);
+    private void printEventBadge(int totalDiscountPrice) {
+        String eventBadgeName = Badge.getEventBadgeName(totalDiscountPrice);
+        outputView.printEventBadgeName(eventBadgeName);
+    }
 
-        // <할인 후 예상 결제금액>
+    private String printGiftMenu(int visitDate, int originalTotalPrice) {
+        String giftMenu = regularDiscountPolicy.getGiftMenuName(visitDate, originalTotalPrice);
+        outputView.printGiftMenuName(giftMenu);
+        return giftMenu;
+    }
+
+    private void printAfterDiscountPaymentPrice(int originalTotalPrice, int totalDiscountPrice, int giftMenuPrice) {
         int discountedPaymentPrice = christmasService.getDiscountedPaymentPrice(
                 originalTotalPrice, totalDiscountPrice, giftMenuPrice
         );
         outputView.printDiscountedPaymentPrice(discountedPaymentPrice);
+    }
 
-        // <12월 이벤트 배지>
-        String eventBadgeName = Badge.getEventBadgeName(totalDiscountPrice);
-        outputView.printEventBadgeName(eventBadgeName);
+    private int printTotalDiscountPrice(Map<String, Integer> discountDetails) {
+        int totalDiscountPrice = christmasService.getTotalDiscountPrice(discountDetails);
+        outputView.printTotalDiscountPrice(totalDiscountPrice);
+        return totalDiscountPrice;
+    }
+
+    private int printOrderDetails(Orders orders) {
+        outputView.printOrders(orders);
+
+        int originalTotalPrice = MenuItem.getOrderTotalPrice(orders);
+        outputView.printOriginalTotalPrice(originalTotalPrice);
+        return originalTotalPrice;
     }
 
     private int inputVisitDate() {
