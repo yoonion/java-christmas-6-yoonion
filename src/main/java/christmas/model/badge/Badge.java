@@ -12,4 +12,14 @@ public enum Badge {
         this.badgeName = badgeName;
         this.discountedPrice = discountedPrice;
     }
+
+    public static String getEventBadgeName(int totalDiscountedPrice) {
+        String badgeName = "";
+        for (Badge badge : Badge.values()) {
+            if (badge.discountedPrice < totalDiscountedPrice) {
+                badgeName = badge.badgeName;
+            }
+        }
+        return badgeName;
+    }
 }

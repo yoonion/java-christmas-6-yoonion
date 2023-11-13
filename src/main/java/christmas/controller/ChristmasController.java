@@ -1,5 +1,6 @@
 package christmas.controller;
 
+import christmas.model.badge.Badge;
 import christmas.model.discount.ChristmasDiscountPolicy;
 import christmas.model.discount.RegularDiscountPolicy;
 import christmas.model.menu.MenuItem;
@@ -78,7 +79,9 @@ public class ChristmasController {
         );
         outputView.printDiscountedPaymentPrice(discountedPaymentPrice);
 
-        // <12월 이벤트 배지> TODO
+        // <12월 이벤트 배지>
+        String eventBadgeName = Badge.getEventBadgeName(totalDiscountPrice);
+        outputView.printEventBadgeName(eventBadgeName);
     }
 
     private int inputVisitDate() {

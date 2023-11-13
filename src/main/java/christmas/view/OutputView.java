@@ -13,6 +13,7 @@ public class OutputView {
     private static final String DISCOUNT_PRICE_DETAILS_TITLE = "\n<혜택 내역>";
     private static final String TOTAL_DISCOUNT_PRICE_TITLE = "\n<총혜택 금액>";
     private static final String DISCOUNTED_PAYMENT_PRICE = "\n<할인 후 예상 결제 금액>";
+    private static final String EVENT_BADGE_TITLE = "\n<12월 이벤트 배지>";
 
     public void printEventIntroduction(int visitDate) {
         String introductionMessage = "12월 " + visitDate + "일에 우테코 식당에 받을 이벤트 혜택 미리보기!";
@@ -67,6 +68,15 @@ public class OutputView {
     public void printDiscountedPaymentPrice(int discountedPaymentPrice) {
         System.out.println(DISCOUNTED_PAYMENT_PRICE);
         System.out.println(getFormatCommaNumber(discountedPaymentPrice) + "원");
+    }
+
+    public void printEventBadgeName(String eventBadgeName) {
+        System.out.println(EVENT_BADGE_TITLE);
+        if (!eventBadgeName.isEmpty()) {
+            System.out.println(eventBadgeName);
+        } else if (eventBadgeName.isEmpty()) {
+            System.out.println(NOTING_MESSAGE);
+        }
     }
 
     private static String getFormatCommaNumber(int number) {
