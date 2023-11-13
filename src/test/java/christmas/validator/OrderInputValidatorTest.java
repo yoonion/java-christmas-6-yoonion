@@ -19,7 +19,16 @@ class OrderInputValidatorTest {
     @DisplayName("주문 메뉴에 중복 메뉴가 있는 경우 예외 처리")
     @Test
     void orderDuplicateMenuTest() {
-        String order = "티본스테이크-1,티본스테이크-2,제로콜라-1";
+        String order = "티본스테이크-3,티본스테이크-1,티본스테이크-2,제로콜라-1";
+        Assertions.assertThatThrownBy(() -> orderInputValidator.checkOrderFormat(order))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining(ValidatorConstants.INVALID_ORDER_MESSAGE);
+    }
+
+    @DisplayName("주문 메뉴 개수가 숫자가 아닌 경우 예외 처리")
+    @Test
+    void orderMenuQuantityIsNumberTest() {
+        String order = "티본스테이크-a,제로콜라-1";
         Assertions.assertThatThrownBy(() -> orderInputValidator.checkOrderFormat(order))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining(ValidatorConstants.INVALID_ORDER_MESSAGE);
