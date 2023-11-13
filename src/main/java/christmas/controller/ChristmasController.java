@@ -52,6 +52,8 @@ public class ChristmasController {
         outputView.printOriginalTotalPrice(originalTotalPrice);
 
         // <증정 메뉴>
+        String giftMenu = regularDiscountPolicy.applyGiftMenuName(visitDate, originalTotalPrice);
+        outputView.printGiftMenuName(giftMenu);
 
         // <혜택 내역>
         // 크리스마스 디데이 할인
@@ -71,6 +73,8 @@ public class ChristmasController {
         System.out.println("specialDiscountPrice = " + specialDiscountPrice);
 
         // 증정 이벤트
+        int giftMenuPrice = regularDiscountPolicy.applyGiftMenuPrice(giftMenu);
+        System.out.println("giftMenuPrice = " + giftMenuPrice);
     }
 
     private int inputVisitDate() {

@@ -8,6 +8,7 @@ public class OutputView {
 
     private static final String ORDER_MENU_TITLE = "\n<주문 메뉴>";
     private static final String ORIGINAL_TOTAL_PRICE_TITLE = "\n<할인 전 총주문 금액>";
+    private static final String GIFT_MENU_TITLE = "\n<증정 메뉴>";
 
     public void printEventIntroduction(int visitDate) {
         String introductionMessage = "12월 " + visitDate + "일에 우테코 식당에 받을 이벤트 혜택 미리보기!";
@@ -26,5 +27,10 @@ public class OutputView {
         String originalTotalPrice = Integer.toString(orderTotalPrice);
         System.out.println(ORIGINAL_TOTAL_PRICE_TITLE);
         System.out.println(originalTotalPrice.replaceAll("\\B(?=(\\d{3})+(?!\\d))", ","));
+    }
+
+    public void printGiftMenuName(String giftMenu) {
+        System.out.println(GIFT_MENU_TITLE);
+        System.out.println(giftMenu + " 1개");
     }
 }

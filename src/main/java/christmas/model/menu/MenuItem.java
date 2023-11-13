@@ -60,7 +60,7 @@ public enum MenuItem {
         Map<String, Integer> orderItems = orders.getOrders();
         int orderTotalPrice = 0;
         for (Map.Entry<String, Integer> order : orderItems.entrySet()) {
-            orderTotalPrice += findByItemName(order.getKey()).itemPrice;
+            orderTotalPrice += (findByItemName(order.getKey()).itemPrice) * order.getValue();
         }
         return orderTotalPrice;
     }
@@ -85,5 +85,9 @@ public enum MenuItem {
             }
         }
         return mainMenuQuantity;
+    }
+
+    public static int getMenuPrice(String itemName) {
+        return findByItemName(itemName).itemPrice;
     }
 }

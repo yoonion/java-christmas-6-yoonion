@@ -3,16 +3,19 @@ package christmas.model.discount;
 import christmas.model.menu.MenuItem;
 import christmas.model.order.Orders;
 
+import javax.swing.*;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 public class RegularDiscountPolicy {
     private static final int DISCOUNT_MINIMUM_DATE = 1;
     private static final int DISCOUNT_MAXIMUM_DATE = 31;
+
+    private static final String GIFT_MENU = "샴페인";
+    private static final int GIFT_MENU_MINIMUM_PRICE = 120000;
 
     private static final int DAY_OF_WEEK_DISCOUNT_PRICE = 2023;
     private static final int SPECIAL_DISCOUNT_PRICE = 1000;
@@ -41,6 +44,22 @@ public class RegularDiscountPolicy {
     public int applySpecialDiscountPrice(int visitDate) {
         if (SPECIAL_DISCOUNT_DATE.contains(visitDate)) {
             return SPECIAL_DISCOUNT_PRICE;
+        }
+        return 0;
+    }
+
+    public String applyGiftMenuName(int visitDate, int originalTotalPrice) {
+        if (visitDate >= DISCOUNT_MINIMUM_DATE &&
+                visitDate <= DISCOUNT_MAXIMUM_DATE &&
+                originalTotalPrice >= GIFT_MENU_MINIMUM_PRICE) {
+            return GIFT_MENU;
+        }
+        return "";
+    }
+
+    public int applyGiftMenuPrice(String menuName) {
+        if (!menuName.isEmpty()) {
+            return MenuItem.getMenuPrice(menuName);
         }
         return 0;
     }
