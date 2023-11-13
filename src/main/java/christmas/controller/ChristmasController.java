@@ -68,11 +68,15 @@ public class ChristmasController {
         );
         outputView.printDiscountPriceDetails(discountDetails);
 
-        // <총혜택 금액> TODO
+        // <총혜택 금액>
         int totalDiscountPrice = christmasService.getTotalDiscountPrice(discountDetails);
         outputView.printTotalDiscountPrice(totalDiscountPrice);
 
-        // <할인 후 예상 결제금액> TODO
+        // <할인 후 예상 결제금액>
+        int discountedPaymentPrice = christmasService.getDiscountedPaymentPrice(
+                originalTotalPrice, totalDiscountPrice, giftMenuPrice
+        );
+        outputView.printDiscountedPaymentPrice(discountedPaymentPrice);
 
         // <12월 이벤트 배지> TODO
     }

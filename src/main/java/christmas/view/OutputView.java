@@ -64,6 +64,11 @@ public class OutputView {
         }
     }
 
+    public void printDiscountedPaymentPrice(int discountedPaymentPrice) {
+        System.out.println(DISCOUNTED_PAYMENT_PRICE);
+        System.out.println(getFormatCommaNumber(discountedPaymentPrice) + "원");
+    }
+
     private static String getFormatCommaNumber(int number) {
         return Integer.toString(number).replaceAll("\\B(?=(\\d{3})+(?!\\d))", ",");
     }

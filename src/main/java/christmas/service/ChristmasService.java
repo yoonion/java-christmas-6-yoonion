@@ -51,4 +51,8 @@ public class ChristmasService {
         }
         return orders;
     }
+
+    public int getDiscountedPaymentPrice(int originalTotalPrice, int totalDiscountPrice, int giftMenuPrice) {
+        return originalTotalPrice - totalDiscountPrice + giftMenuPrice;
+    }
 }
