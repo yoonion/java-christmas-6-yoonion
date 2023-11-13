@@ -24,8 +24,7 @@ public class ChristmasController {
     private final OrderInputValidator orderInputValidator;
 
     public ChristmasController(
-            InputView inputView,
-            OutputView outputView,
+            InputView inputView, OutputView outputView,
             ChristmasDiscountPolicy christmasDiscountPolicy,
             RegularDiscountPolicy regularDiscountPolicy,
             ChristmasService christmasService,
@@ -47,11 +46,17 @@ public class ChristmasController {
         Orders orders = inputOrderMenuAndQuantity();
         outputView.printEventIntroduction(visitDate);
 
-        int originalTotalPrice = printOrderDetails(orders); // <주문 메뉴>, <할인 전 총주문 금액>
+        // <주문 메뉴>, <할인 전 총주문 금액>
+        int originalTotalPrice = printOrderDetails(orders);
+        // <증정 메뉴>
         String giftMenu = printGiftMenu(visitDate, originalTotalPrice);
+        // <혜택 내역>
         Map<String, Integer> discountDetails = printDiscountDetails(visitDate, originalTotalPrice, orders, giftMenu);
+        // <총혜택 금액>
         int totalDiscountPrice = printTotalDiscountPrice(discountDetails);
+        // <할인 후 예상 결제 금액>
         printAfterDiscountPaymentPrice(originalTotalPrice, totalDiscountPrice, MenuItem.getMenuPrice(giftMenu));
+        // <12월 이벤트 배지>
         printEventBadge(totalDiscountPrice);
     }
 
