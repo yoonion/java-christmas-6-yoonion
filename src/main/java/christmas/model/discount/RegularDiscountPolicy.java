@@ -5,6 +5,9 @@ import christmas.model.order.Orders;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 public class RegularDiscountPolicy {
@@ -13,6 +16,7 @@ public class RegularDiscountPolicy {
 
     private static final int DAY_OF_WEEK_DISCOUNT_PRICE = 2023;
     private static final int SPECIAL_DISCOUNT_PRICE = 1000;
+    private static final List<Integer> SPECIAL_DISCOUNT_DATE = new ArrayList<>(Arrays.asList(3, 10, 17, 24, 25, 31));
 
     public int applyWeekdayDiscountPrice(int visitDate, Orders orders) {
         // 평일 할인 - 디저트 메뉴 개당 2,023원 할인
@@ -30,6 +34,13 @@ public class RegularDiscountPolicy {
         if (dayOfWeekNumber == 5 || dayOfWeekNumber == 6) {
             int mainMenuQuantity = MenuItem.getMainMenuQuantity(orders);
             return DAY_OF_WEEK_DISCOUNT_PRICE * mainMenuQuantity;
+        }
+        return 0;
+    }
+
+    public int applySpecialDiscountPrice(int visitDate) {
+        if (SPECIAL_DISCOUNT_DATE.contains(visitDate)) {
+            return SPECIAL_DISCOUNT_PRICE;
         }
         return 0;
     }

@@ -43,22 +43,33 @@ public class ChristmasController {
         int visitDate = inputVisitDate();
         Orders orders = inputOrderMenuAndQuantity();
         outputView.printEventIntroduction(visitDate);
+
+        // <주문 메뉴>
         outputView.printOrders(orders);
 
-        // 할인 전 총주문 금액
+        // <할인 전 총주문 금액>
         int originalTotalPrice = MenuItem.getOrderTotalPrice(orders);
         outputView.printOriginalTotalPrice(originalTotalPrice);
 
+        // <증정 메뉴>
+
+        // <혜택 내역>
         // 크리스마스 디데이 할인
         int christmasDiscountPrice = christmasDiscountPolicy.applyChristmasDiscountPrice(visitDate, originalTotalPrice);
+        System.out.println("christmasDiscountPrice = " + christmasDiscountPrice);
 
         // 평일 할인
         int weekdayDiscountPrice = regularDiscountPolicy.applyWeekdayDiscountPrice(visitDate, orders);
+        System.out.println("weekdayDiscountPrice = " + weekdayDiscountPrice);
 
         // 주말 할인
         int freeDayDiscountPrice = regularDiscountPolicy.applyFreeDayDiscountPrice(visitDate, orders);
+        System.out.println("freeDayDiscountPrice = " + freeDayDiscountPrice);
 
         // 특별 할인
+        int specialDiscountPrice = regularDiscountPolicy.applySpecialDiscountPrice(visitDate);
+        System.out.println("specialDiscountPrice = " + specialDiscountPrice);
+
         // 증정 이벤트
     }
 
