@@ -3,7 +3,6 @@ package christmas.model.discount;
 import christmas.model.menu.MenuItem;
 import christmas.model.order.Orders;
 
-import javax.swing.*;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -21,8 +20,17 @@ public class RegularDiscountPolicy {
     private static final int SPECIAL_DISCOUNT_PRICE = 1000;
     private static final List<Integer> SPECIAL_DISCOUNT_DATE = new ArrayList<>(Arrays.asList(3, 10, 17, 24, 25, 31));
 
+    public String applyGiftMenuName(int visitDate, int originalTotalPrice) {
+        if (visitDate >= DISCOUNT_MINIMUM_DATE &&
+                visitDate <= DISCOUNT_MAXIMUM_DATE &&
+                originalTotalPrice >= GIFT_MENU_MINIMUM_PRICE) {
+            return GIFT_MENU;
+        }
+        return "";
+    }
+
+    // 평일 할인 - 디저트 메뉴 개당 2,023원 할인
     public int applyWeekdayDiscountPrice(int visitDate, Orders orders) {
-        // 평일 할인 - 디저트 메뉴 개당 2,023원 할인
         int dayOfWeekNumber = getDayOfWeekNumber(visitDate);
         if (dayOfWeekNumber >= 1 && dayOfWeekNumber <= 4 || dayOfWeekNumber == 7) {
             int dessertMenuQuantity = MenuItem.getDessertMenuQuantity(orders);
@@ -31,8 +39,8 @@ public class RegularDiscountPolicy {
         return 0;
     }
 
+    // 주말 할인 - 메인 메뉴 개당 2,023원 할인
     public int applyFreeDayDiscountPrice(int visitDate, Orders orders) {
-        // 주말 할인 - 메인 메뉴 개당 2,023원 할인
         int dayOfWeekNumber = getDayOfWeekNumber(visitDate);
         if (dayOfWeekNumber == 5 || dayOfWeekNumber == 6) {
             int mainMenuQuantity = MenuItem.getMainMenuQuantity(orders);
@@ -46,15 +54,6 @@ public class RegularDiscountPolicy {
             return SPECIAL_DISCOUNT_PRICE;
         }
         return 0;
-    }
-
-    public String applyGiftMenuName(int visitDate, int originalTotalPrice) {
-        if (visitDate >= DISCOUNT_MINIMUM_DATE &&
-                visitDate <= DISCOUNT_MAXIMUM_DATE &&
-                originalTotalPrice >= GIFT_MENU_MINIMUM_PRICE) {
-            return GIFT_MENU;
-        }
-        return "";
     }
 
     public int applyGiftMenuPrice(String menuName) {
