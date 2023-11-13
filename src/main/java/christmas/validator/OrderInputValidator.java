@@ -6,8 +6,8 @@ import java.util.List;
 public class OrderInputValidator {
 
     public void checkOrderFormat(String inputOrderMenuAndQuantity) {
-        checkContainHyphen(inputOrderMenuAndQuantity);
         List<String> orders = convertOrderStringToList(inputOrderMenuAndQuantity);
+        checkContainHyphen(inputOrderMenuAndQuantity);
         checkOrderDuplicateMenu(orders);
         checkMenuQuantityIsNumber(orders);
     }
@@ -19,9 +19,22 @@ public class OrderInputValidator {
     }
 
     private void checkOrderDuplicateMenu(List<String> orders) {
-        if(orders.size() != orders.stream().distinct().count()){
-            throw new IllegalArgumentException(ValidatorConstants.INVALID_ORDER_MESSAGE);
+        for (String order : orders) {
+            String menu = order.split("-")[0];
+            if (getMenuDuplicateCount(orders, menu) > 1) {
+                throw new IllegalArgumentException(ValidatorConstants.INVALID_ORDER_MESSAGE);
+            }
         }
+    }
+
+    private int getMenuDuplicateCount(List<String> orders, String targetMenu) {
+        int duplicateCount = 0;
+        for (String order : orders) {
+            if (order.contains(targetMenu)) {
+                duplicateCount++;
+            }
+        }
+        return duplicateCount;
     }
 
     private void checkMenuQuantityIsNumber(List<String> orders) {
