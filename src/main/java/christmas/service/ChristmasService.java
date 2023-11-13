@@ -41,6 +41,10 @@ public class ChristmasService {
         return discountDetails;
     }
 
+    public int getDiscountedPaymentPrice(int originalTotalPrice, int totalDiscountPrice, int giftMenuPrice) {
+        return originalTotalPrice - totalDiscountPrice + giftMenuPrice;
+    }
+
     private Map<String, Integer> orderConvertStringToMap(String inputOrderMenuAndQuantity) {
         Map<String, Integer> orders = new HashMap<>();
         String[] orderMenuAndQuantities = inputOrderMenuAndQuantity.split(",");
@@ -50,9 +54,5 @@ public class ChristmasService {
             orders.put(orderMenu, orderQuantity);
         }
         return orders;
-    }
-
-    public int getDiscountedPaymentPrice(int originalTotalPrice, int totalDiscountPrice, int giftMenuPrice) {
-        return originalTotalPrice - totalDiscountPrice + giftMenuPrice;
     }
 }

@@ -20,7 +20,7 @@ public class RegularDiscountPolicy {
     private static final int SPECIAL_DISCOUNT_PRICE = 1000;
     private static final List<Integer> SPECIAL_DISCOUNT_DATE = new ArrayList<>(Arrays.asList(3, 10, 17, 24, 25, 31));
 
-    public String applyGiftMenuName(int visitDate, int originalTotalPrice) {
+    public String getGiftMenuName(int visitDate, int originalTotalPrice) {
         if (visitDate >= DISCOUNT_MINIMUM_DATE &&
                 visitDate <= DISCOUNT_MAXIMUM_DATE &&
                 originalTotalPrice >= GIFT_MENU_MINIMUM_PRICE) {

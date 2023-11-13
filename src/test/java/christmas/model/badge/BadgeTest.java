@@ -25,7 +25,7 @@ class BadgeTest {
         Assertions.assertThat(eventBadgeName).isEqualTo("트리");
     }
 
-    @DisplayName("총혜택 금액이 20,000원 이상 일 때 배지 이름(트리) 가져오기")
+    @DisplayName("총혜택 금액이 20,000원 이상 일 때 배지 이름(산타) 가져오기")
     @ParameterizedTest
     @ValueSource(ints = {20000, 20001, 100000, 5000000, 9999999})
     void getEventBadgeNameSantaTest(int totalDiscountedPrice) {

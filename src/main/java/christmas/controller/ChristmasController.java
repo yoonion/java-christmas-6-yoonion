@@ -55,7 +55,7 @@ public class ChristmasController {
         outputView.printOriginalTotalPrice(originalTotalPrice);
 
         // <증정 메뉴>
-        String giftMenu = regularDiscountPolicy.applyGiftMenuName(visitDate, originalTotalPrice);
+        String giftMenu = regularDiscountPolicy.getGiftMenuName(visitDate, originalTotalPrice);
         outputView.printGiftMenuName(giftMenu);
 
         // <혜택 내역>
