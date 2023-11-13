@@ -55,8 +55,13 @@ public class OutputView {
         }
     }
 
-    public void printTotalDiscountPrice() {
+    public void printTotalDiscountPrice(int totalDiscountPrice) {
         System.out.println(TOTAL_DISCOUNT_PRICE_TITLE);
+        if (totalDiscountPrice == 0) {
+            System.out.println(NOTING_MESSAGE);
+        } else if (totalDiscountPrice > 0) {
+            System.out.println(getFormatCommaNumber(totalDiscountPrice * -1) + "원");
+        }
     }
 
     private static String getFormatCommaNumber(int number) {

@@ -69,6 +69,8 @@ public class ChristmasController {
         outputView.printDiscountPriceDetails(discountDetails);
 
         // <총혜택 금액> TODO
+        int totalDiscountPrice = christmasService.getTotalDiscountPrice(discountDetails);
+        outputView.printTotalDiscountPrice(totalDiscountPrice);
 
         // <할인 후 예상 결제금액> TODO
 

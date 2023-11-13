@@ -11,6 +11,14 @@ public class ChristmasService {
         return new Orders(orderConvertStringToMap(inputOrderMenuAndQuantity));
     }
 
+    public int getTotalDiscountPrice(Map<String, Integer> discountDetails) {
+        int totalDiscountPrice = 0;
+        for (Integer discountPrice : discountDetails.values()) {
+            totalDiscountPrice += discountPrice;
+        }
+        return totalDiscountPrice;
+    }
+
     public Map<String, Integer> getDiscountDetails(
             int christmasDiscountPrice, int weekdayDiscountPrice,
             int freeDayDiscountPrice, int specialDiscountPrice, int giftMenuPrice) {
