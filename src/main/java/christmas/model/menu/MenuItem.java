@@ -64,4 +64,26 @@ public enum MenuItem {
         }
         return orderTotalPrice;
     }
+
+    public static int getDessertMenuQuantity(Orders orders) {
+        Map<String, Integer> orderItems = orders.getOrders();
+        int dessertMenuQuantity = 0;
+        for (Map.Entry<String, Integer> order : orderItems.entrySet()) {
+            if (findByItemName(order.getKey()).category == MenuCategory.DESSERT) {
+                dessertMenuQuantity += order.getValue();
+            }
+        }
+        return dessertMenuQuantity;
+    }
+
+    public static int getMainMenuQuantity(Orders orders) {
+        Map<String, Integer> orderItems = orders.getOrders();
+        int mainMenuQuantity = 0;
+        for (Map.Entry<String, Integer> order : orderItems.entrySet()) {
+            if (findByItemName(order.getKey()).category == MenuCategory.MAIN) {
+                mainMenuQuantity += order.getValue();
+            }
+        }
+        return mainMenuQuantity;
+    }
 }

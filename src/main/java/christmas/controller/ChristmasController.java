@@ -1,5 +1,7 @@
 package christmas.controller;
 
+import christmas.model.discount.ChristmasDiscountPolicy;
+import christmas.model.discount.RegularDiscountPolicy;
 import christmas.model.menu.MenuItem;
 import christmas.model.order.Orders;
 import christmas.service.ChristmasService;
@@ -12,6 +14,8 @@ public class ChristmasController {
 
     private final InputView inputView;
     private final OutputView outputView;
+    private final ChristmasDiscountPolicy christmasDiscountPolicy;
+    private final RegularDiscountPolicy regularDiscountPolicy;
     private final ChristmasService christmasService;
     private final VisitDateInputValidator visitDateInputValidator;
     private final OrderInputValidator orderInputValidator;
@@ -19,12 +23,16 @@ public class ChristmasController {
     public ChristmasController(
             InputView inputView,
             OutputView outputView,
+            ChristmasDiscountPolicy christmasDiscountPolicy,
+            RegularDiscountPolicy regularDiscountPolicy,
             ChristmasService christmasService,
             VisitDateInputValidator visitDateInputValidator,
             OrderInputValidator orderInputValidator
     ) {
         this.inputView = inputView;
         this.outputView = outputView;
+        this.christmasDiscountPolicy = christmasDiscountPolicy;
+        this.regularDiscountPolicy = regularDiscountPolicy;
         this.christmasService = christmasService;
         this.visitDateInputValidator = visitDateInputValidator;
         this.orderInputValidator = orderInputValidator;
@@ -42,7 +50,16 @@ public class ChristmasController {
         outputView.printOriginalTotalPrice(originalTotalPrice);
 
         // 크리스마스 디데이 할인
-        int christmasDiscountPrice = christmasService.getChristmasDiscountPrice(visitDate, originalTotalPrice);
+        int christmasDiscountPrice = christmasDiscountPolicy.applyChristmasDiscountPrice(visitDate, originalTotalPrice);
+
+        // 평일 할인
+        int weekdayDiscountPrice = regularDiscountPolicy.applyWeekdayDiscountPrice(visitDate, orders);
+
+        // 주말 할인
+        int freeDayDiscountPrice = regularDiscountPolicy.applyFreeDayDiscountPrice(visitDate, orders);
+
+        // 특별 할인
+        // 증정 이벤트
     }
 
     private int inputVisitDate() {

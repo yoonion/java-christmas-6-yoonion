@@ -8,7 +8,7 @@ public class ChristmasDiscountPolicy {
 
     private int discountPrice = 1000;
 
-    public int getChristmasDiscountPrice(int visitDate, int originalTotalPrice) {
+    public int applyChristmasDiscountPrice(int visitDate, int originalTotalPrice) {
         if (visitDate >= MINIMUM_DISCOUNT_DATE && visitDate <= MAXIMUM_DISCOUNT_DATE &&
                 originalTotalPrice > DiscountPolicyConstants.DISCOUNT_ORDER_MINIMUM_PRICE) {
             return discountPrice += (visitDate - MINIMUM_DISCOUNT_DATE) * DAILY_DISCOUNT_INCREASE_PRICE;
