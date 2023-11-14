@@ -14,7 +14,7 @@ public class RegularDiscountPolicy {
     private static final int DISCOUNT_MAXIMUM_DATE = 31;
 
     private static final String GIFT_MENU = "샴페인";
-    private static final int GIFT_MENU_MINIMUM_PRICE = 120000;
+    private static final int MINIMUM_ORDER_PRICE_FOR_GIFT = 120000;
 
     private static final int DAY_OF_WEEK_DISCOUNT_PRICE = 2023;
     private static final int SPECIAL_DISCOUNT_PRICE = 1000;
@@ -23,7 +23,7 @@ public class RegularDiscountPolicy {
     public String getGiftMenuName(int visitDate, int originalTotalPrice) {
         if (visitDate >= DISCOUNT_MINIMUM_DATE &&
                 visitDate <= DISCOUNT_MAXIMUM_DATE &&
-                originalTotalPrice >= GIFT_MENU_MINIMUM_PRICE) {
+                originalTotalPrice >= MINIMUM_ORDER_PRICE_FOR_GIFT) {
             return GIFT_MENU;
         }
         return "";

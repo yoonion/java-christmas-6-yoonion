@@ -30,7 +30,6 @@ public class Orders {
         for (Map.Entry<String, Integer> order : orders.entrySet()) {
             String orderMenu = order.getKey();
             Integer orderQuantity = order.getValue();
-
             checkOrderMenuExist(orderMenu);
             checkOrderQuantityRange(orderQuantity);
 
