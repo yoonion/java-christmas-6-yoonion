@@ -6,17 +6,34 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
+
+import java.util.stream.Stream;
 
 class RegularDiscountPolicyTest {
 
     RegularDiscountPolicy regularDiscountPolicy = new RegularDiscountPolicy();
     ChristmasService christmasService = new ChristmasService();
 
+    // 평일 할인 적용 날짜
+    private static Stream<Integer> weekdayProvider() {
+        return Stream.of(3, 4, 5, 6, 7, 10, 11, 12, 13, 14, 17, 18, 19, 20, 21, 24, 25, 26, 27, 28, 31);
+    }
+
+    // 주말 할인 적용 날짜
+    private static Stream<Integer> freeDayProvider() {
+        return Stream.of(1, 2, 8, 9, 15, 16, 22, 23, 29, 30);
+    }
+
+    // 특별 할인 적용 날짜
+    private static Stream<Integer> specialDayProvider() {
+        return Stream.of(3, 10, 17, 24, 25, 31);
+    }
+
     @DisplayName("평일 주문에 총 주문 금액이 10,000원 미만 인 경우, 할인 해주지 않음")
     @ParameterizedTest
-    @ValueSource(ints = {3, 4, 5, 6, 7, 10, 11, 12, 13, 14, 17, 18, 19, 20, 21, 24, 25, 26, 27, 28, 31})
+    @MethodSource("weekdayProvider")
     void weekdayMinimumOrderPriceTest(int visitDate) {
         Orders orders = christmasService.createOrders("아이스크림-1");
         int discountPrice = regularDiscountPolicy.applyWeekdayDiscountPrice(visitDate, orders);
@@ -26,7 +43,7 @@ class RegularDiscountPolicyTest {
 
     @DisplayName("평일 주문에 디저트가 있는 경우 할인 테스트")
     @ParameterizedTest
-    @ValueSource(ints = {3, 4, 5, 6, 7, 10, 11, 12, 13, 14, 17, 18, 19, 20, 21, 24, 25, 26, 27, 28, 31})
+    @MethodSource("weekdayProvider")
     void weekdayDessertDiscountTest(int visitDate) {
         Orders orders = christmasService.createOrders("티본스테이크-1,초코케이크-1");
         int discountPrice = regularDiscountPolicy.applyWeekdayDiscountPrice(visitDate, orders);
@@ -36,7 +53,7 @@ class RegularDiscountPolicyTest {
 
     @DisplayName("평일 주문에 디저트가 2개 있는 경우 할인 테스트")
     @ParameterizedTest
-    @ValueSource(ints = {3, 4, 5, 6, 7, 10, 11, 12, 13, 14, 17, 18, 19, 20, 21, 24, 25, 26, 27, 28, 31})
+    @MethodSource("weekdayProvider")
     void weekdayTwoDessertDiscountTest(int visitDate) {
         Orders orders = christmasService.createOrders("티본스테이크-1,초코케이크-1,아이스크림-1");
         int discountPrice = regularDiscountPolicy.applyWeekdayDiscountPrice(visitDate, orders);
@@ -46,7 +63,7 @@ class RegularDiscountPolicyTest {
 
     @DisplayName("평일 주문에 디저트가 없는 경우 할인 테스트")
     @ParameterizedTest
-    @ValueSource(ints = {3, 4, 5, 6, 7, 10, 11, 12, 13, 14, 17, 18, 19, 20, 21, 24, 25, 26, 27, 28, 31})
+    @MethodSource("weekdayProvider")
     void freeDayNotDessertDiscountTest(int visitDate) {
         Orders orders = christmasService.createOrders("티본스테이크-1,양송이수프-1,레드와인-1");
         int discountPrice = regularDiscountPolicy.applyWeekdayDiscountPrice(visitDate, orders);
@@ -56,7 +73,7 @@ class RegularDiscountPolicyTest {
 
     @DisplayName("주말 주문에 메인 메뉴가 있는 경우 할인 테스트")
     @ParameterizedTest
-    @ValueSource(ints = {1, 2, 8, 9, 15, 16, 22, 23, 29, 30})
+    @MethodSource("freeDayProvider")
     void freeDayMainMenuDiscountTest(int visitDate) {
         Orders orders = christmasService.createOrders("티본스테이크-1,양송이수프-1,레드와인-1");
         int discountPrice = regularDiscountPolicy.applyFreeDayDiscountPrice(visitDate, orders);
@@ -66,7 +83,7 @@ class RegularDiscountPolicyTest {
 
     @DisplayName("주말 주문에 메인 메뉴가 2개 있는 경우 할인 테스트")
     @ParameterizedTest
-    @ValueSource(ints = {1, 2, 8, 9, 15, 16, 22, 23, 29, 30})
+    @MethodSource("freeDayProvider")
     void freeDayMainTwoMenuDiscountTest(int visitDate) {
         Orders orders = christmasService.createOrders("티본스테이크-1,바비큐립-1,양송이수프-1,레드와인-1");
         int discountPrice = regularDiscountPolicy.applyFreeDayDiscountPrice(visitDate, orders);
@@ -76,7 +93,7 @@ class RegularDiscountPolicyTest {
 
     @DisplayName("주말 주문에 메인 메뉴가 없는 경우 할인 테스트")
     @ParameterizedTest
-    @ValueSource(ints = {1, 2, 8, 9, 15, 16, 22, 23, 29, 30})
+    @MethodSource("freeDayProvider")
     void freeDayNotMainMenuDiscountTest(int visitDate) {
         Orders orders = christmasService.createOrders("초코케이크-1,양송이수프-1,레드와인-1");
         int discountPrice = regularDiscountPolicy.applyFreeDayDiscountPrice(visitDate, orders);
@@ -86,7 +103,7 @@ class RegularDiscountPolicyTest {
 
     @DisplayName("특별 할인 테스트")
     @ParameterizedTest
-    @ValueSource(ints = {3, 10, 17, 24, 25, 31})
+    @MethodSource("specialDayProvider")
     void specialDayDiscountTest(int visitDate) {
         Orders orders = christmasService.createOrders("초코케이크-1,양송이수프-1,레드와인-1");
         int discountPrice = regularDiscountPolicy.applySpecialDiscountPrice(visitDate, orders);
@@ -96,7 +113,7 @@ class RegularDiscountPolicyTest {
 
     @DisplayName("총주문 금액이 10,000원 미만이면 특별 할인을 해주지 않는다")
     @ParameterizedTest
-    @ValueSource(ints = {3, 10, 17, 24, 25, 31})
+    @MethodSource("specialDayProvider")
     void specialDayMinimumOrderPriceTest(int visitDate) {
         Orders orders = christmasService.createOrders("아이스크림-1");
         int discountPrice = regularDiscountPolicy.applySpecialDiscountPrice(visitDate, orders);

@@ -5,13 +5,9 @@ import christmas.service.ChristmasService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.stream.Stream;
-
-import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 class ChristmasDiscountPolicyTest {
 
@@ -19,17 +15,13 @@ class ChristmasDiscountPolicyTest {
     ChristmasService christmasService = new ChristmasService();
 
     // 크리스마스 디데이 할인에 포함된 날짜
-    static Stream<Arguments> christmasDiscountDayProvider(){
-        return Stream.of(
-                arguments(1), arguments(2), arguments(7), arguments(15), arguments(20), arguments(25)
-        );
+    private static Stream<Integer> christmasDiscountDayProvider() {
+        return Stream.of(1, 2, 7, 15, 20, 25);
     }
 
     // 크리스마스 디데이 할인이 아닌 날짜
-    static Stream<Arguments> notChristmasDiscountDayProvider(){
-        return Stream.of(
-                arguments(26), arguments(27), arguments(28), arguments(29), arguments(30), arguments(31)
-        );
+    private static Stream<Integer> notChristmasDiscountDayProvider(){
+        return Stream.of(26, 27, 28, 29, 30, 31);
     }
 
     @DisplayName("주문 금액이 10,000원 이상 일 때 크리스마스 할인 정책 테스트")
