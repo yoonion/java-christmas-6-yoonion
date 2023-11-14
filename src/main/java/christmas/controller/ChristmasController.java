@@ -49,7 +49,7 @@ public class ChristmasController {
         // <주문 메뉴>, <할인 전 총주문 금액>
         int originalTotalPrice = printOrderDetails(orders);
         // <증정 메뉴>
-        String giftMenu = printGiftMenu(visitDate, originalTotalPrice);
+        String giftMenu = printGiftMenu(visitDate, orders);
         // <혜택 내역>
         Map<String, Integer> discountDetails = printDiscountDetails(visitDate, originalTotalPrice, orders, giftMenu);
         // <총혜택 금액>
@@ -64,7 +64,7 @@ public class ChristmasController {
         int christmasDiscountPrice = christmasDiscountPolicy.applyChristmasDiscountPrice(visitDate, originalTotalPrice);
         int weekdayDiscountPrice = regularDiscountPolicy.applyWeekdayDiscountPrice(visitDate, orders);
         int freeDayDiscountPrice = regularDiscountPolicy.applyFreeDayDiscountPrice(visitDate, orders);
-        int specialDiscountPrice = regularDiscountPolicy.applySpecialDiscountPrice(visitDate);
+        int specialDiscountPrice = regularDiscountPolicy.applySpecialDiscountPrice(visitDate, orders);
         int giftMenuPrice = regularDiscountPolicy.applyGiftMenuPrice(giftMenu);
         Map<String, Integer> discountDetails = christmasService.getDiscountDetails(
                 christmasDiscountPrice, weekdayDiscountPrice, freeDayDiscountPrice, specialDiscountPrice, giftMenuPrice
@@ -78,8 +78,8 @@ public class ChristmasController {
         outputView.printEventBadgeName(eventBadgeName);
     }
 
-    private String printGiftMenu(int visitDate, int originalTotalPrice) {
-        String giftMenu = regularDiscountPolicy.getGiftMenuName(visitDate, originalTotalPrice);
+    private String printGiftMenu(int visitDate, Orders orders) {
+        String giftMenu = regularDiscountPolicy.getGiftMenuName(visitDate, orders);
         outputView.printGiftMenuName(giftMenu);
         return giftMenu;
     }

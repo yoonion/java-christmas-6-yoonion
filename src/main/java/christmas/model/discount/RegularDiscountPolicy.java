@@ -20,10 +20,11 @@ public class RegularDiscountPolicy {
     private static final int SPECIAL_DISCOUNT_PRICE = 1000;
     private static final List<Integer> SPECIAL_DISCOUNT_DATE = new ArrayList<>(Arrays.asList(3, 10, 17, 24, 25, 31));
 
-    public String getGiftMenuName(int visitDate, int originalTotalPrice) {
+    public String getGiftMenuName(int visitDate, Orders orders) {
+        int orderTotalPrice = MenuItem.getOrderTotalPrice(orders);
         if (visitDate >= DISCOUNT_MINIMUM_DATE &&
                 visitDate <= DISCOUNT_MAXIMUM_DATE &&
-                originalTotalPrice >= MINIMUM_ORDER_PRICE_FOR_GIFT) {
+                orderTotalPrice >= MINIMUM_ORDER_PRICE_FOR_GIFT) {
             return GIFT_MENU;
         }
         return "";
@@ -32,7 +33,8 @@ public class RegularDiscountPolicy {
     // 평일 할인 - 디저트 메뉴 개당 2,023원 할인
     public int applyWeekdayDiscountPrice(int visitDate, Orders orders) {
         int dayOfWeekNumber = getDayOfWeekNumber(visitDate);
-        if (dayOfWeekNumber >= 1 && dayOfWeekNumber <= 4 || dayOfWeekNumber == 7) {
+        int orderTotalPrice = MenuItem.getOrderTotalPrice(orders);
+        if ((dayOfWeekNumber >= 1 && dayOfWeekNumber <= 4 || dayOfWeekNumber == 7) && orderTotalPrice >= DiscountPolicyConstants.DISCOUNT_ORDER_MINIMUM_PRICE) {
             int dessertMenuQuantity = MenuItem.getDessertMenuQuantity(orders);
             return DAY_OF_WEEK_DISCOUNT_PRICE * dessertMenuQuantity;
         }
@@ -42,15 +44,17 @@ public class RegularDiscountPolicy {
     // 주말 할인 - 메인 메뉴 개당 2,023원 할인
     public int applyFreeDayDiscountPrice(int visitDate, Orders orders) {
         int dayOfWeekNumber = getDayOfWeekNumber(visitDate);
-        if (dayOfWeekNumber == 5 || dayOfWeekNumber == 6) {
+        int orderTotalPrice = MenuItem.getOrderTotalPrice(orders);
+        if ((dayOfWeekNumber == 5 || dayOfWeekNumber == 6) && orderTotalPrice >= DiscountPolicyConstants.DISCOUNT_ORDER_MINIMUM_PRICE) {
             int mainMenuQuantity = MenuItem.getMainMenuQuantity(orders);
             return DAY_OF_WEEK_DISCOUNT_PRICE * mainMenuQuantity;
         }
         return 0;
     }
 
-    public int applySpecialDiscountPrice(int visitDate) {
-        if (SPECIAL_DISCOUNT_DATE.contains(visitDate)) {
+    public int applySpecialDiscountPrice(int visitDate, Orders orders) {
+        int orderTotalPrice = MenuItem.getOrderTotalPrice(orders);
+        if (SPECIAL_DISCOUNT_DATE.contains(visitDate) && orderTotalPrice >= DiscountPolicyConstants.DISCOUNT_ORDER_MINIMUM_PRICE) {
             return SPECIAL_DISCOUNT_PRICE;
         }
         return 0;

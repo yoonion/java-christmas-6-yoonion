@@ -14,6 +14,16 @@ class RegularDiscountPolicyTest {
     RegularDiscountPolicy regularDiscountPolicy = new RegularDiscountPolicy();
     ChristmasService christmasService = new ChristmasService();
 
+    @DisplayName("평일 주문에 총 주문 금액이 10,000원 미만 인 경우, 할인 해주지 않음")
+    @ParameterizedTest
+    @ValueSource(ints = {3, 4, 5, 6, 7, 10, 11, 12, 13, 14, 17, 18, 19, 20, 21, 24, 25, 26, 27, 28, 31})
+    void weekdayMinimumOrderPriceTest(int visitDate) {
+        Orders orders = christmasService.createOrders("아이스크림-1");
+        int discountPrice = regularDiscountPolicy.applyWeekdayDiscountPrice(visitDate, orders);
+
+        Assertions.assertThat(discountPrice).isEqualTo(0);
+    }
+
     @DisplayName("평일 주문에 디저트가 있는 경우 할인 테스트")
     @ParameterizedTest
     @ValueSource(ints = {3, 4, 5, 6, 7, 10, 11, 12, 13, 14, 17, 18, 19, 20, 21, 24, 25, 26, 27, 28, 31})
@@ -78,7 +88,8 @@ class RegularDiscountPolicyTest {
     @ParameterizedTest
     @ValueSource(ints = {3, 10, 17, 24, 25, 31})
     void specialDayDiscountTest(int visitDate) {
-        int discountPrice = regularDiscountPolicy.applySpecialDiscountPrice(visitDate);
+        Orders orders = christmasService.createOrders("초코케이크-1,양송이수프-1,레드와인-1");
+        int discountPrice = regularDiscountPolicy.applySpecialDiscountPrice(visitDate, orders);
 
         Assertions.assertThat(discountPrice).isEqualTo(1000);
     }
@@ -87,25 +98,28 @@ class RegularDiscountPolicyTest {
     @ParameterizedTest
     @ValueSource(ints = {1, 7, 13, 19, 28, 30})
     void notSpecialDayDiscountTest(int visitDate) {
-        int discountPrice = regularDiscountPolicy.applySpecialDiscountPrice(visitDate);
+        Orders orders = christmasService.createOrders("초코케이크-1,양송이수프-1,레드와인-1");
+        int discountPrice = regularDiscountPolicy.applySpecialDiscountPrice(visitDate, orders);
 
         Assertions.assertThat(discountPrice).isEqualTo(0);
     }
 
     @DisplayName("할인 전 총주문 금액이 120,000원 이상이면, 샴페인 증정 이벤트")
     @ParameterizedTest
-    @CsvSource({"1, 120000", "15, 120000", "31, 120000"})
-    void giftMenuTest(int visitDate, int originalTotalPrice) {
-        String giftMenuName = regularDiscountPolicy.getGiftMenuName(visitDate, originalTotalPrice);
+    @ValueSource(ints = {1, 15, 31})
+    void giftMenuTest(int visitDate) {
+        Orders orders = christmasService.createOrders("티본스테이크-1,바비큐립-1,양송이수프-1,레드와인-1");
+        String giftMenuName = regularDiscountPolicy.getGiftMenuName(visitDate, orders);
 
         Assertions.assertThat(giftMenuName).isEqualTo("샴페인");
     }
 
     @DisplayName("할인 전 총주문 금액이 120,000원 미만이면, 샴페인 증정 안함")
     @ParameterizedTest
-    @CsvSource({"1, 119999", "15, 0", "31, 9999"})
-    void notGiftMenuTest(int visitDate, int originalTotalPrice) {
-        String giftMenuName = regularDiscountPolicy.getGiftMenuName(visitDate, originalTotalPrice);
+    @ValueSource(ints = {1, 15, 31})
+    void notGiftMenuTest(int visitDate) {
+        Orders orders = christmasService.createOrders("양송이수프-1");
+        String giftMenuName = regularDiscountPolicy.getGiftMenuName(visitDate, orders);
 
         Assertions.assertThat(giftMenuName).isEqualTo("");
     }
