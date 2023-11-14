@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.Map;
+
 class ChristmasServiceTest {
 
     ChristmasService christmasService = new ChristmasService();
@@ -34,5 +36,64 @@ class ChristmasServiceTest {
         Assertions.assertThatThrownBy(() -> christmasService.createOrders("티본스테이크-0"))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining(ValidatorConstants.INVALID_ORDER_MESSAGE);
+    }
+
+    @DisplayName("할인 혜택 내역 테스트")
+    @Test
+    void getDiscountDetailsTest() {
+        int christmasDiscountPrice = 0;
+        int weekdayDiscountPrice = 1000;
+        int freeDayDiscountPrice = 1000;
+        int specialDiscountPrice = 0;
+        int giftMenuDiscountPrice = 25000;
+        Map<String, Integer> discountDetails = christmasService.getDiscountDetails(
+                christmasDiscountPrice,
+                weekdayDiscountPrice,
+                freeDayDiscountPrice,
+                specialDiscountPrice,
+                giftMenuDiscountPrice
+        );
+        Assertions.assertThat(discountDetails.size()).isEqualTo(3);
+    }
+
+    @DisplayName("총혜택 금액 테스트")
+    @Test
+    void getTotalDiscountPriceTest() {
+        int christmasDiscountPrice = 0;
+        int weekdayDiscountPrice = 1000;
+        int freeDayDiscountPrice = 1000;
+        int specialDiscountPrice = 0;
+        int giftMenuDiscountPrice = 25000;
+        Map<String, Integer> discountDetails = christmasService.getDiscountDetails(
+                christmasDiscountPrice,
+                weekdayDiscountPrice,
+                freeDayDiscountPrice,
+                specialDiscountPrice,
+                giftMenuDiscountPrice
+        );
+        int totalDiscountPrice = christmasService.getTotalDiscountPrice(discountDetails);
+        Assertions.assertThat(totalDiscountPrice).isEqualTo(27000);
+    }
+
+    @DisplayName("할인 후 결제 금액 테스트")
+    @Test
+    void getDiscountedPaymentPriceTest() {
+        int christmasDiscountPrice = 0;
+        int weekdayDiscountPrice = 1000;
+        int freeDayDiscountPrice = 1000;
+        int specialDiscountPrice = 0;
+        int giftMenuDiscountPrice = 25000;
+        Map<String, Integer> discountDetails = christmasService.getDiscountDetails(
+                christmasDiscountPrice,
+                weekdayDiscountPrice,
+                freeDayDiscountPrice,
+                specialDiscountPrice,
+                giftMenuDiscountPrice
+        );
+        int totalDiscountPrice = christmasService.getTotalDiscountPrice(discountDetails);
+        int discountedPaymentPrice = christmasService.getDiscountedPaymentPrice(
+                100000, totalDiscountPrice, giftMenuDiscountPrice
+        );
+        Assertions.assertThat(discountedPaymentPrice).isEqualTo(98000);
     }
 }
