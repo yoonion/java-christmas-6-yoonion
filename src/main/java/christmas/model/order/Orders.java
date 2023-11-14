@@ -16,7 +16,10 @@ public class Orders {
     private final Map<String, Integer> orders;
 
     public Orders(Map<String, Integer> orders) {
-        validate(orders);
+        validateExistMenu(orders);
+        validateMenuQuantityRange(orders);
+        validateOrderOnlyBeverage(orders);
+        validateTotalOrderQuantity(orders);
         this.orders = orders;
     }
 
@@ -24,47 +27,39 @@ public class Orders {
         return Collections.unmodifiableMap(orders);
     }
 
-    private void validate(Map<String, Integer> orders) {
-        int totalOrderQuantity = 0;
-        boolean isMenuOnlyBeverage = true;
-        for (Map.Entry<String, Integer> order : orders.entrySet()) {
-            String orderMenu = order.getKey();
-            Integer orderQuantity = order.getValue();
-            checkOrderMenuExist(orderMenu);
-            checkOrderQuantityRange(orderQuantity);
-
-            if(isMenuOnlyBeverage){
-                isMenuOnlyBeverage = MenuItem.isMenuBeverage(orderMenu);
+    private void validateExistMenu(Map<String, Integer> orders) {
+        for (String menu : orders.keySet()) {
+            if (!MenuItem.hasItemName(menu)) {
+                throw new IllegalArgumentException(INVALID_ORDER_MESSAGE);
             }
-            totalOrderQuantity += orderQuantity;
         }
-        checkOrderOnlyBeverage(isMenuOnlyBeverage);
-        checkTotalOrderQuantity(totalOrderQuantity);
     }
 
-    private void checkOrderOnlyBeverage(boolean isMenuOnlyBeverage) {
+    private void validateMenuQuantityRange(Map<String, Integer> orders) {
+        for (Integer quantity : orders.values()) {
+            if (!(quantity >= ORDER_MINIMUM_QUANTITY && quantity <= ORDER_MAXIMUM_QUANTITY)) {
+                throw new IllegalArgumentException(INVALID_ORDER_MESSAGE);
+            }
+        }
+    }
+
+    private void validateOrderOnlyBeverage(Map<String, Integer> orders) {
+        boolean isMenuOnlyBeverage = true;
+        for (String menu : orders.keySet()) {
+            if(isMenuOnlyBeverage){
+                isMenuOnlyBeverage = MenuItem.isMenuBeverage(menu);
+            }
+        }
         if (isMenuOnlyBeverage) {
             throw new IllegalArgumentException(INVALID_ORDER_MESSAGE);
         }
     }
 
-    private void checkOrderMenuExist(String orderMenu) {
-        if (!MenuItem.hasItemName(orderMenu)) {
-            throw new IllegalArgumentException(INVALID_ORDER_MESSAGE);
+    private void validateTotalOrderQuantity(Map<String, Integer> orders) {
+        int totalOrderQuantity = 0;
+        for (Integer quantity : orders.values()) {
+            totalOrderQuantity += quantity;
         }
-    }
-
-    private void checkOrderQuantityRange(Integer orderQuantity) {
-        try {
-            if (!(orderQuantity >= ORDER_MINIMUM_QUANTITY && orderQuantity <= ORDER_MAXIMUM_QUANTITY)) {
-                throw new IllegalArgumentException(INVALID_ORDER_MESSAGE);
-            }
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException(INVALID_ORDER_MESSAGE);
-        }
-    }
-
-    private void checkTotalOrderQuantity(int totalOrderQuantity) {
         if (totalOrderQuantity > ORDER_MAXIMUM_QUANTITY || totalOrderQuantity < ORDER_MINIMUM_QUANTITY) {
             throw new IllegalArgumentException(INVALID_ORDER_MESSAGE);
         }
