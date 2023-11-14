@@ -15,9 +15,11 @@ public enum Badge {
 
     public static String getEventBadgeName(int totalDiscountedPrice) {
         String badgeName = "";
+        int nowBadgePrice = 0;
         for (Badge badge : Badge.values()) {
-            if (badge.discountedPrice <= totalDiscountedPrice) {
+            if (badge.discountedPrice <= totalDiscountedPrice && badge.discountedPrice >= nowBadgePrice) {
                 badgeName = badge.badgeName;
+                nowBadgePrice = badge.discountedPrice;
             }
         }
         return badgeName;
