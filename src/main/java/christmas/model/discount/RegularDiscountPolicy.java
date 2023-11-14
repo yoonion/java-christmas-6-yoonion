@@ -33,8 +33,7 @@ public class RegularDiscountPolicy {
     // 평일 할인 - 디저트 메뉴 개당 2,023원 할인
     public int applyWeekdayDiscountPrice(int visitDate, Orders orders) {
         int dayOfWeekNumber = getDayOfWeekNumber(visitDate);
-        if ((dayOfWeekNumber >= 1 && dayOfWeekNumber <= 4 || dayOfWeekNumber == 7)
-                && isMoreMinimumOrderTotalPrice(orders)) {
+        if (isWeekday(dayOfWeekNumber) && isMoreMinimumOrderTotalPrice(orders)) {
             int dessertMenuQuantity = MenuItem.getDessertMenuQuantity(orders);
             return DAY_OF_WEEK_DISCOUNT_PRICE * dessertMenuQuantity;
         }
@@ -44,7 +43,7 @@ public class RegularDiscountPolicy {
     // 주말 할인 - 메인 메뉴 개당 2,023원 할인
     public int applyFreeDayDiscountPrice(int visitDate, Orders orders) {
         int dayOfWeekNumber = getDayOfWeekNumber(visitDate);
-        if ((dayOfWeekNumber == 5 || dayOfWeekNumber == 6) && isMoreMinimumOrderTotalPrice(orders)) {
+        if (isFreeDay(dayOfWeekNumber) && isMoreMinimumOrderTotalPrice(orders)) {
             int mainMenuQuantity = MenuItem.getMainMenuQuantity(orders);
             return DAY_OF_WEEK_DISCOUNT_PRICE * mainMenuQuantity;
         }
@@ -70,7 +69,7 @@ public class RegularDiscountPolicy {
         return orderTotalPrice >= DiscountPolicyConstants.DISCOUNT_ORDER_MINIMUM_PRICE;
     }
 
-    private static int getDayOfWeekNumber(int visitDate) {
+    private int getDayOfWeekNumber(int visitDate) {
         LocalDate date = LocalDate.of(
                 DiscountPolicyConstants.EVENT_YEAR, DiscountPolicyConstants.EVENT_MONTH, visitDate
         );
@@ -78,5 +77,15 @@ public class RegularDiscountPolicy {
         // 숫자 요일 구하기 - 월요일부터 일요일까지 1~7의 숫자로 표현됩니다. 1,2,3,4,7(평일), 5,6(주말)
         DayOfWeek dayOfWeek = date.getDayOfWeek();
         return dayOfWeek.getValue();
+    }
+
+    // 일,월,화,수,목
+    private boolean isWeekday(int dayOfWeekNumber) {
+        return dayOfWeekNumber >= 1 && dayOfWeekNumber <= 4 || dayOfWeekNumber == 7;
+    }
+
+    // 금,토
+    private boolean isFreeDay(int dayOfWeekNumber) {
+        return dayOfWeekNumber == 5 || dayOfWeekNumber == 6;
     }
 }
