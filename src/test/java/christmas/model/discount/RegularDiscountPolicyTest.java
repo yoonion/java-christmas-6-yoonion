@@ -94,6 +94,16 @@ class RegularDiscountPolicyTest {
         Assertions.assertThat(discountPrice).isEqualTo(1000);
     }
 
+    @DisplayName("총주문 금액이 10,000원 미만이면 특별 할인을 해주지 않는다")
+    @ParameterizedTest
+    @ValueSource(ints = {3, 10, 17, 24, 25, 31})
+    void specialDayMinimumOrderPriceTest(int visitDate) {
+        Orders orders = christmasService.createOrders("아이스크림-1");
+        int discountPrice = regularDiscountPolicy.applySpecialDiscountPrice(visitDate, orders);
+
+        Assertions.assertThat(discountPrice).isEqualTo(0);
+    }
+
     @DisplayName("특별 할인이 아닌 날 테스트")
     @ParameterizedTest
     @ValueSource(ints = {1, 7, 13, 19, 28, 30})

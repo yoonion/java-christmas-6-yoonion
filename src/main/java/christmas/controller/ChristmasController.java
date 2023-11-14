@@ -100,12 +100,11 @@ public class ChristmasController {
         return totalDiscountPrice;
     }
 
-    private int printOrderDetails(Orders orders) {
+    private void printOrderDetails(Orders orders) {
         outputView.printOrders(orders);
 
         int originalTotalPrice = MenuItem.getOrderTotalPrice(orders);
         outputView.printOriginalTotalPrice(originalTotalPrice);
-        return originalTotalPrice;
     }
 
     private int inputVisitDate() {
