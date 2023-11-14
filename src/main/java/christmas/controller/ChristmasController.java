@@ -47,25 +47,28 @@ public class ChristmasController {
         outputView.printEventIntroduction(visitDate);
 
         // <주문 메뉴>, <할인 전 총주문 금액>
-        int originalTotalPrice = printOrderDetails(orders);
+        printOrderDetails(orders);
         // <증정 메뉴>
-        String giftMenu = printGiftMenu(visitDate, orders);
+        String giftMenuName = printGiftMenu(visitDate, orders);
         // <혜택 내역>
-        Map<String, Integer> discountDetails = printDiscountDetails(visitDate, originalTotalPrice, orders, giftMenu);
+        Map<String, Integer> discountDetails = printDiscountDetails(visitDate, orders);
         // <총혜택 금액>
         int totalDiscountPrice = printTotalDiscountPrice(discountDetails);
         // <할인 후 예상 결제 금액>
-        printAfterDiscountPaymentPrice(originalTotalPrice, totalDiscountPrice, MenuItem.getMenuPrice(giftMenu));
+        printAfterDiscountPaymentPrice(
+                MenuItem.getOrderTotalPrice(orders), totalDiscountPrice, MenuItem.getMenuPrice(giftMenuName)
+        );
         // <12월 이벤트 배지>
         printEventBadge(totalDiscountPrice);
     }
 
-    private Map<String, Integer> printDiscountDetails(int visitDate, int originalTotalPrice, Orders orders, String giftMenu) {
-        int christmasDiscountPrice = christmasDiscountPolicy.applyChristmasDiscountPrice(visitDate, originalTotalPrice);
+    private Map<String, Integer> printDiscountDetails(int visitDate, Orders orders) {
+        int christmasDiscountPrice = christmasDiscountPolicy.applyChristmasDiscountPrice(visitDate, orders);
         int weekdayDiscountPrice = regularDiscountPolicy.applyWeekdayDiscountPrice(visitDate, orders);
         int freeDayDiscountPrice = regularDiscountPolicy.applyFreeDayDiscountPrice(visitDate, orders);
         int specialDiscountPrice = regularDiscountPolicy.applySpecialDiscountPrice(visitDate, orders);
-        int giftMenuPrice = regularDiscountPolicy.applyGiftMenuPrice(giftMenu);
+        String giftMenuName = regularDiscountPolicy.getGiftMenuName(visitDate, orders);
+        int giftMenuPrice = regularDiscountPolicy.applyGiftMenuPrice(giftMenuName);
         Map<String, Integer> discountDetails = christmasService.getDiscountDetails(
                 christmasDiscountPrice, weekdayDiscountPrice, freeDayDiscountPrice, specialDiscountPrice, giftMenuPrice
         );

@@ -33,7 +33,8 @@ public class RegularDiscountPolicy {
     // 평일 할인 - 디저트 메뉴 개당 2,023원 할인
     public int applyWeekdayDiscountPrice(int visitDate, Orders orders) {
         int dayOfWeekNumber = getDayOfWeekNumber(visitDate);
-        if ((dayOfWeekNumber >= 1 && dayOfWeekNumber <= 4 || dayOfWeekNumber == 7) && isMoreMinimumOrderTotalPrice(orders)) {
+        if ((dayOfWeekNumber >= 1 && dayOfWeekNumber <= 4 || dayOfWeekNumber == 7)
+                && isMoreMinimumOrderTotalPrice(orders)) {
             int dessertMenuQuantity = MenuItem.getDessertMenuQuantity(orders);
             return DAY_OF_WEEK_DISCOUNT_PRICE * dessertMenuQuantity;
         }
